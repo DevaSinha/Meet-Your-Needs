@@ -1,36 +1,88 @@
 import React, { useState } from 'react';
+import { MDBContainer, MDBCol, MDBRow, MDBInput } from 'mdb-react-ui-kit';
+import { Alert } from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
+import '../index.css';
+function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [user, setUser] = useState(0);
+    const navigate = useNavigate();
 
-function Form() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+    const handleSubmit = (event) => {
+        if (!email || !password) {
+            setErrorMessage('Please enter your email and password');
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            setErrorMessage('Please enter a valid email address');
+        } else {
+            setErrorMessage('');
+            var link = 'http://localhost:8080/checkuser?mail=' + email + '&password=' + password;
+            fetch(link)
+                .then(response => response.json())
+                .then(data => {
+                    setUser(data)
+                    var role = null;
+                    if(data.role != null){
+                        role = data.role.roleId;
+                    }
+                    if (role === 1) {
+                        navigate('/admin');
+                    }
+                    else if (role === 2) {
+                        navigate('/vendor');
+                    }
+                    else if (role === 3) {
+                        navigate('/client');
+                    }
+                    else {
+                        console.log("user not found");
+                        setErrorMessage('Invalid email or password');
+                    }
+                    localStorage.setItem('user', JSON.stringify(data));
+                })
+                .catch(error => console.log(error));
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
+        }
+    }
+    return (
+        <MDBContainer fluid className="p-3 my-5 h-custom">
+            <div className="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary">
+                <a href='/'>
+                    <div style={{ fontSize: '30px', fontFamily: 'Anton', color: 'white' }}>
+                        Meet Your Need
+                    </div></a>
+            </div>
+            <MDBRow>
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
+                <MDBCol col='10' md='6'>
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid" alt="Sample" />
+                </MDBCol>
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
+                <MDBCol col='4' md='6'>
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username:
-        <input type="text" value={username} onChange={handleUsernameChange} />
-      </label>
-      <br />
-      <label>
-        Password:
-        <input type="password" value={password} onChange={handlePasswordChange} />
-      </label>
-      <br />
-      <button type="submit">Submit</button>
-    </form>
-  );
+                    <div className="divider d-flex align-items-center my-4">
+                    </div>
+                    <form>
+                        <MDBInput wrapperClass='mb-4' label='Email address' id="email" type='email' size="lg" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <MDBInput wrapperClass='mb-4' label='Password' id="password" value={password} onChange={(e) => setPassword(e.target.value)} type='password' size="lg" />
+                        {errorMessage && <Alert color="danger">{errorMessage}</Alert>}
+                        <div className="d-flex justify-content-between mb-4">
+                            <a href="/password">Forgot password?</a>
+                        </div>
+
+                        <div className='text-center text-md-start mt-4 pt-2'>
+                            <button type="button" class="btn btn-primary btn-md" onClick={handleSubmit}>Login</button>
+                            <p className="small fw-bold mt-2 pt-1 mb-2">Don't have an account? <a href="/register" className="link-danger">Register</a></p>
+                        </div>
+                    </form>
+
+                </MDBCol>
+
+            </MDBRow>
+
+        </MDBContainer>
+    );
 }
 
-export default Form;
+export default Login;
