@@ -4,41 +4,40 @@ import Homepage from './Components/Homepage';
 import Loginn from './Components/Login';
 import { Navbar, Nav } from 'react-bootstrap';
 import ClientHome from './Components/Clienthome';
-import VendorHome from './Components/VendorHome';
+import VendorHome from './Components/Vendor/VendorHome';
 import AdminHome from './Components/AdminHome';
-import RegistrationForm from './Components/newregistration';
 import ForgotPassword from './Components/forgotPassword';
 import FormWithValidation from './Components/FormWithValidation';
 import AboutSection from './Components/AboutSection';
+import Navigation from './Components/Navbar';
+import RequestForm from './Components/client/Request';
+import { Link } from '@mui/material';
 
 
 function App() {
   return (
-    <div>
-      <Navbar bg="light" expand="lg">
-      <Navbar.Brand href="/">Meet Your Need</Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto">
-          <Nav.Link href="/">Home</Nav.Link>
-          <Nav.Link href="/about">About</Nav.Link>
-          <Nav.Link href="/contact">Contact</Nav.Link>
-          <Nav.Link href='/login'>Login</Nav.Link>
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/login" element={<Loginn />} />
-          <Route path="/client" element={<ClientHome/>} />
-          <Route path="/admin" element={<AdminHome />} />
-          <Route path="/vendor" element={<VendorHome />} />
-          <Route path="/register" element={<FormWithValidation/>} />
-          <Route path='/password' element={<ForgotPassword/>}/>
-          <Route path='/about' element={<AboutSection/>}/>
-        </Routes>
-      </BrowserRouter>
+    <div className='bg-glass'>
+      
+      <div className="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5" style={{backgroundColor:"#00ABE4"}}>
+                <Link href='/' underline="none">
+                    <div style={{ fontSize: '30px', fontFamily: 'Courgette', color: '#FFFFFF' }}>
+                        Meet Your Need
+                    </div></Link>
+            </div>
+            <Navigation/>
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/login" element={<Loginn />} />
+        <Route path="/client" element={<ClientHome />}>
+          <Route path="/client/request" element={<RequestForm />} />
+        </Route>
+        <Route path="/request" element={<RequestForm />} />
+        <Route path="/admin" element={<AdminHome />} />
+        <Route path="/vendor" element={<VendorHome />} />
+        <Route path="/register" element={<FormWithValidation />} />
+        <Route path='/password' element={<ForgotPassword />} />
+      </Routes>
+      
     </div>
   );
 }

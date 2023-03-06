@@ -7,7 +7,7 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [user, setUser] = useState(0);
+    const [user, setUser] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = (event) => {
@@ -23,17 +23,27 @@ function Login() {
                 .then(data => {
                     setUser(data)
                     var role = null;
-                    if(data.role != null){
+                    if (data.role != null) {
                         role = data.role.roleId;
                     }
                     if (role === 1) {
                         navigate('/admin');
                     }
                     else if (role === 2) {
+                        fetch("http://localhost:8080/getVendorByUser?id=" + data.userId)
+                            .then(response => response.json())
+                            .then(data => {
+                                localStorage.setItem("userdata", JSON.stringify(data))
+                            })
                         navigate('/vendor');
                     }
                     else if (role === 3) {
-                        navigate('/client');
+                        fetch("http://localhost:8080/getUser?id=" + data.userId)
+                            .then(response => response.json())
+                            .then(data => {
+                                localStorage.setItem("userdata", JSON.stringify(data))
+                            })
+                        navigate('/request');
                     }
                     else {
                         console.log("user not found");
@@ -47,12 +57,6 @@ function Login() {
     }
     return (
         <MDBContainer fluid className="p-3 my-5 h-custom">
-            <div className="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary">
-                <a href='/'>
-                    <div style={{ fontSize: '30px', fontFamily: 'Anton', color: 'white' }}>
-                        Meet Your Need
-                    </div></a>
-            </div>
             <MDBRow>
 
                 <MDBCol col='10' md='6'>
