@@ -11,7 +11,17 @@ import javax.persistence.Table;
 @Table(name = "role")
 public class Role {
 
-    @Id
+    public Role() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Role(Integer roleId) {
+		super();
+		this.roleId = roleId;
+	}
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id")
     private Integer roleId;

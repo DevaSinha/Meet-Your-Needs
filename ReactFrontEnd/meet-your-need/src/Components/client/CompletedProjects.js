@@ -9,6 +9,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button } from "@mui/material";
 import { Navigate, useNavigate } from "react-router";
+import { format } from 'date-fns'
+import parseISO from "date-fns/parseISO";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,19 +34,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 
-const PendingRequest = () => {
+const CompletedProjects = () => {
   const loggedInUser = JSON.parse(localStorage.getItem("userdata"));
   const [req, setReq] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
-    fetch('http://localhost:8080/pendingUserRequest?id='+loggedInUser.clientId)
+    fetch('http://localhost:8080/getProject')
       .then(response => response.json())
       .then(data => { setReq(data) })
   },[])
 
   const handleButtonClick = (event) => {
-      localStorage.setItem('reqid', Number(event.target.id));
-      navigate('/responses');
+      localStorage.setItem('projectid', Number(event.target.id));
+      navigate('/feedback');
   }
 
   return (
@@ -53,25 +55,27 @@ const PendingRequest = () => {
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Customer</StyledTableCell>
-              <StyledTableCell align="right">Description</StyledTableCell>
-              <StyledTableCell align="right">budget</StyledTableCell>
-              <StyledTableCell align="right">Posted on</StyledTableCell>
+              <StyledTableCell>Project Name</StyledTableCell>
+              <StyledTableCell align="right">Vendor</StyledTableCell>
               <StyledTableCell align="right">Category</StyledTableCell>
+              <StyledTableCell align="right">Cost</StyledTableCell>
+              <StyledTableCell align="right">Posted on</StyledTableCell>
+              <StyledTableCell align="right">Completed on</StyledTableCell>
               <StyledTableCell align="right"></StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {req.map((request) => (
-              <StyledTableRow key={request.rid}>
+              <StyledTableRow key={request.projectId}>
                 <StyledTableCell component="th" scope="request">
-                  {request.client.userId.firstName}&nbsp;{request.client.userId.lastName}
+                  {request.responseId.reqid.title}
                 </StyledTableCell>
-                <StyledTableCell align="right" sx={{width:400}}>{request.pid}</StyledTableCell>
-                <StyledTableCell align="right">{request.budget}</StyledTableCell>
-                <StyledTableCell align="right">{request.rdate}</StyledTableCell>
-                <StyledTableCell align="right">{request.category.category_name}</StyledTableCell>
-                <StyledTableCell align="right"><Button id={request.rid} variant="outlined" onClick={handleButtonClick}>Check Responses</Button></StyledTableCell>
+                <StyledTableCell align="right">{request.responseId.vid.userid.firstName}&nbsp;{request.responseId.vid.userid.lastName}</StyledTableCell>
+                <StyledTableCell align="right">{request.responseId.reqid.category.category_name}</StyledTableCell>
+                <StyledTableCell align="right">{request.responseId.reqid.budget}</StyledTableCell>
+                <StyledTableCell align="right">{request.responseId.reqid.rdate}</StyledTableCell>
+                <StyledTableCell align="right">{format(parseISO(request.startTime), 'dd/mm/yyyy')}</StyledTableCell>
+                <StyledTableCell align="right"><Button id={request.projectId} variant="outlined" onClick={handleButtonClick}>Give Feedback</Button></StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
@@ -81,4 +85,4 @@ const PendingRequest = () => {
   )
 }
 
-export default PendingRequest;
+export default CompletedProjects;

@@ -24,22 +24,31 @@ public class Response
 	@ManyToOne()
 	@JoinColumn(name="request_id")
 	private Request reqid;
-	@Column(name="vendor_id")
-	private int vid;
-	@Column(name="response_date")
+	
+	@ManyToOne()
+	@JoinColumn(name="vendor_id")
+	private Vendor vid;
+	
+	@Column
 	Date date;
+	
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
 	@Column
 	String description;
 	public Response() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Response(int rid, Request reqid, int vid, Date date, String description) {
+	public Response(int rid, Request reqid, Vendor vid, String description) {
 		super();
 		this.rid = rid;
 		this.reqid = reqid;
 		this.vid = vid;
-		this.date = date;
 		this.description = description;
 	}
 	public int getRid() {
@@ -54,17 +63,11 @@ public class Response
 	public void setReqid(Request reqid) {
 		this.reqid = reqid;
 	}
-	public int getVid() {
+	public Vendor getVid() {
 		return vid;
 	}
-	public void setVid(int vid) {
+	public void setVid(Vendor vid) {
 		this.vid = vid;
-	}
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
 	}
 	public String getDescription() {
 		return description;

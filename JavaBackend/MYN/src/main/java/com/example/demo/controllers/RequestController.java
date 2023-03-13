@@ -34,6 +34,13 @@ public class RequestController {
 	}
 	
 	@CrossOrigin
+	@GetMapping("/getReqById")
+	public Request getRequest(@RequestParam("id") int req)
+	{
+		return service.getReq(req);
+	}
+	
+	@CrossOrigin
 	@GetMapping("/pendingRequest")
 	public List<Request> getpending()
 	{
@@ -46,5 +53,15 @@ public class RequestController {
 	{
 		return service.getUserReq(id);
 	}
+	
+	@CrossOrigin
+	@GetMapping("/updateReqStatus")
+	public Request updateStatus(@RequestParam("id") int id)
+	{
+		Request req = getRequest(id);
+		req.setStatus(1);
+		return service.addReq(req);
+	}
+	
 	
 }

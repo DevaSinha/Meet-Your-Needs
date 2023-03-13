@@ -7,6 +7,12 @@ import Paper from '@mui/material/Paper';
 import { Stack } from '@mui/system';
 import '../Css/layout.css'
 import { Divider } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import InfoIcon from '@mui/icons-material/Info';
+import PhoneIcon from '@mui/icons-material/Phone';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 
 
@@ -39,15 +45,43 @@ function Navigation() {
                     marginRight: '20px'
                 }}>
                 <Stack spacing={2}>
-                    <Item><Nav.Link href="/">Home</Nav.Link></Item>
+                    <Item>
+                        <Nav.Link href="/">
+                            <HomeIcon />
+                            <br />
+                            Home
+                        </Nav.Link></Item>
 
-                    <Item><Nav.Link href="/about">About</Nav.Link></Item>
-                    <Item><Nav.Link href="/contact">Contact</Nav.Link></Item>
+                    <Item>
+                        <Nav.Link href="/about">
+                            <InfoIcon /><br />
+                            About
+                        </Nav.Link></Item>
+                    <Item>
+                        <Nav.Link href="/contact">
+                            <PhoneIcon /><br />
+                            Contact
+                        </Nav.Link></Item>
                     {isLoggedIn ?
-                        <Item><Nav.Link onClick={handleLogout}>Logout</Nav.Link></Item> :
-                        <Item><Nav.Link href="/login">Login</Nav.Link></Item>}
-                </Stack>
+                        <Item>
+                            <Nav.Link onClick={handleLogout}>
+                                <LoginIcon /><br />
+                                Logout
+                            </Nav.Link></Item> :
+                        <Item>
+                            <Nav.Link href="/login">
+                                <LogoutIcon /><br />
+                                Login
+                            </Nav.Link></Item>}
 
+                    {isLoggedIn ?
+                        <div></div> :
+                        <Item>
+                            <Nav.Link href="/register">
+                                <AddCircleIcon /><br />
+                                Register
+                            </Nav.Link></Item>}
+                </Stack>
             </Box>
             <Divider orientation="vertical">
             </Divider>

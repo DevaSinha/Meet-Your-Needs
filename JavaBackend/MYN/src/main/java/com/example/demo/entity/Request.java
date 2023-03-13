@@ -29,7 +29,7 @@ public class Request {
 	@JoinColumn(name = "category_id")
 	private Category category;
 	
-	@Column(name = "project_id")
+	@Column(name = "description")
 	private String pid;
 
 	@Column(name = "request_date")
@@ -38,6 +38,12 @@ public class Request {
 	double budget;
 	@Column
 	int status;
+	
+	@Column
+	Date deadline;
+	
+	@Column
+	String title;
 	
 	@OneToMany(mappedBy = "reqid")
     @Cascade(CascadeType.ALL)
@@ -85,6 +91,24 @@ public class Request {
 		this.responses = responses;
 		this.client = client;
 	}
+	
+	
+	
+	public Request(int rid, Category category, String pid, Date rdate, double budget, int status, Date deadline,
+			String title, Set<Response> responses, Client client) {
+		super();
+		this.rid = rid;
+		this.category = category;
+		this.pid = pid;
+		this.rdate = rdate;
+		this.budget = budget;
+		this.status = status;
+		this.deadline = deadline;
+		this.title = title;
+		this.responses = responses;
+		this.client = client;
+	}
+
 	public int getRid() {
 		return rid;
 	}
@@ -121,11 +145,30 @@ public class Request {
 	public void setStatus(int status) {
 		this.status = status;
 	}
+
+	public Date getDeadline() {
+		return deadline;
+	}
+
+	public void setDeadline(Date deadline) {
+		this.deadline = deadline;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	@Override
 	public String toString() {
-		return "Request [rid=" + rid + ", Ctid=" + category + ", pid=" + pid + ", rdate=" + rdate + ", budget=" + budget
-				+ ", status=" + status + ", responses=" + responses + ", client=" + client + "]";
+		return "Request [rid=" + rid + ", category=" + category + ", pid=" + pid + ", rdate=" + rdate + ", budget="
+				+ budget + ", status=" + status + ", deadline=" + deadline + ", title=" + title + ", responses="
+				+ responses + ", client=" + client + "]";
 	}
+	
 	
 	
 	

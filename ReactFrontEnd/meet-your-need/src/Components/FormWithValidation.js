@@ -178,7 +178,7 @@ export default function FormWithValidation() {
         const reqOption = {
             method: "post",
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ firstName: state.fname.value, lastName: state.lname.value, email: state.email1.value,stateId : statevalue, birthdate: state.bday.value, password: state.password.value, phoneNo: state.phone.value, nationality: state.nationality.value, cityId: Number(document.getElementById("city").value), address: state.address.value, answer: document.getElementById("answer").value, questionId: Number(document.getElementById("que").value) })
+            body: JSON.stringify({ firstName: state.fname.value, lastName: state.lname.value, email: state.email1.value,    stateId : document.getElementById("stat").value, birthdate: state.bday.value, password: state.password.value, phoneNo: state.phone.value, nationality: state.nationality.value, cityId: Number(document.getElementById("city").value), address: state.address.value, answer: document.getElementById("answer").value, questionId: Number(document.getElementById("que").value), role: 3 })
         }
         fetch("http://localhost:8080/adduser", reqOption)
             .then(resp => {

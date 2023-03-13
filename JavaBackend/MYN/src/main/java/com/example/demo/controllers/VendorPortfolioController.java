@@ -28,5 +28,12 @@ public class VendorPortfolioController
 	{
 		return service.getById(id);
 	}
+	
+	@CrossOrigin
+	@GetMapping("/getVendorPortfolioByVendor")
+	public VendorPortfolio getByVendor(@RequestParam ("id") int id)
+	{
+		return service.getByVendor(id);
+	}
 
 }

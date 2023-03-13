@@ -13,5 +13,8 @@ public interface VendorPortfolioRepository extends JpaRepository<VendorPortfolio
 {
 	 @Query("select v from VendorPortfolio v where portfolio_id = ?1")
 	 public VendorPortfolio getById(int portfolio_id);
+	 
+	 @Query("select v from VendorPortfolio v where v_id.vendorid = ?1")
+	 public VendorPortfolio getByVendor(int portfolio_id);
 
 }

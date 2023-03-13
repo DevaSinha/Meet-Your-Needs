@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "vendor")
 public class Vendor {
@@ -20,6 +22,22 @@ public class Vendor {
 	@OneToOne
 	@JoinColumn(name="user_id")
 	User userid;
+	
+	@OneToOne
+	@JsonIgnoreProperties("v_id")
+	@JoinColumn(name = "portfolio")
+	VendorPortfolio port;
+	
+	
+	
+
+	public VendorPortfolio getPort() {
+		return port;
+	}
+
+	public void setPort(VendorPortfolio port) {
+		this.port = port;
+	}
 
 	public Vendor() {
 		super();
@@ -30,6 +48,11 @@ public class Vendor {
 		super();
 		this.vendorid = vendorid;
 		this.userid = userid;
+	}
+
+	public Vendor(int vendorid) {
+		super();
+		this.vendorid = vendorid;
 	}
 
 	public int getVendorid() {

@@ -27,6 +27,7 @@ public class VendorPortfolio {
 	int portfolioid;
 
 	@OneToOne
+	@JsonIgnoreProperties("port")
 	@JoinColumn(name = "vendor_id")
 	Vendor v_id;
 
@@ -39,10 +40,15 @@ public class VendorPortfolio {
 	Set<Skill> skill_id;
 	@Column
 	String about;
+	
 	@Column(name = "price_per_hour")
 	double price;
+	
 	@Column(name = "portfolio_file")
 	BYTE_ARRAY file;
+	
+	@Column(name ="experience")
+	int experience;
 
 	public VendorPortfolio() {
 
@@ -58,6 +64,17 @@ public class VendorPortfolio {
 		this.about = about;
 		this.price = price;
 		this.file = file;
+	}
+
+	
+	
+	
+	public int getExperience() {
+		return experience;
+	}
+
+	public void setExperience(int experience) {
+		this.experience = experience;
 	}
 
 	public VendorPortfolio(int portfolioid) {

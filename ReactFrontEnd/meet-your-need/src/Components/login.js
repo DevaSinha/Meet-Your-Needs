@@ -43,7 +43,7 @@ function Login() {
                             .then(data => {
                                 localStorage.setItem("userdata", JSON.stringify(data))
                             })
-                        navigate('/request');
+                        navigate('/client');
                     }
                     else {
                         console.log("user not found");

@@ -63,7 +63,18 @@ const RequestForm = () => {
                 <CardContent>
                     <h1 >Post New Requirment</h1>
                     <hr />
+                    <label style={{ marginTop: '20px' }}>
+                            <TextField
+                                id="description"
+                                label="Title"
+                                multiline
+                                onChange={handleDescriptionChange}
+                            />
+                        </label>
+                        <br />
+                        <br/>
                     <FormControl onSubmit={handleSubmit}>
+                        
                         <InputLabel id="demo-simple-select-standard-label">Category</InputLabel>
                         <Select
                             labelId="demo-simple-select-standard-label"
@@ -83,7 +94,7 @@ const RequestForm = () => {
                         </Select>
                         <br />
                         <label style={{ marginTop: '20px' }}>
-                            Budget:
+                            Budget: {budget}
                             <Slider
                                 aria-label="Small steps"
                                 defaultValue={5000}
@@ -96,10 +107,14 @@ const RequestForm = () => {
                                 id="budget"
                                 inline
                             />
-                            {budget}
                         </label>
                         
                         <br />
+                        <br />
+                        <br />
+                        <br />
+                        Deadline
+                        <input type={'date'} ></input>
                         <label style={{ marginTop: '20px' }}>
                             <TextField
                                 id="description"
@@ -116,7 +131,8 @@ const RequestForm = () => {
                         </div>
                     </FormControl>
                 </CardContent>
-                <Alert severity="success" style={{display: 'none'}} id="sucess">Applied</Alert>
+                <br/>
+                <Alert severity="success" style={{display: 'none'}} id="sucess">Requirment Posted</Alert>
             </Card>
         </div>
     );

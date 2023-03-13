@@ -35,24 +35,35 @@ const VendorHome = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const [vendor, setVendor] = useState({})
     const [req, setReq] = useState([])
+    
+   
     useEffect(() => {
+        console.log("in effect")
         fetch("http://localhost:8080/pendingRequest")
             .then(response => response.json())
-            .then(data => { setReq(data) })
+            .then(data => { 
+                setReq(data); })
+
+            fetch("http://localhost:8080/getVendorByUser?id="+user.userId)
+            .then(response => response.json())
+            .then(vdr => { setVendor(vdr) })
     }, []);
 
     const handleSubmit = (e) => {
+
         e.preventDefault();
         const reqOption = {
             method: "post",
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ reqid: Number(e.target.id), vid:vendor.vendorid, date: new Date(), })
+            body: JSON.stringify({ reqid: Number(e.target.id), vid: vendor.vendorid, date: new Date(), })
         }
         fetch("http://localhost:8080/addResp", reqOption)
             .then(resp => {
                 if (resp.ok) {
                     console.log("requset sent");
                     document.getElementById("sucess").style.display = "block";
+                    document.getElementById(e.target.id).disabled = true;
+                    document.getElementById(e.target.id).color = "error";
                 }
                 else
                     throw new Error("server error");
@@ -62,6 +73,7 @@ const VendorHome = () => {
 
     return (
         <div style={{float:"inline-start", marginTop:'20px'}}>
+        <Alert severity="success" style={{display: 'none'}} id="sucess">Applied</Alert>
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
@@ -80,18 +92,17 @@ const VendorHome = () => {
                             <StyledTableCell component="th" scope="request">
                                 {request.client.userId.firstName}&nbsp;{request.client.userId.lastName}
                             </StyledTableCell>
-                            <StyledTableCell align="right">{request.pid}</StyledTableCell>
+                            <StyledTableCell align="right" sx={{width:400}}>{request.pid}</StyledTableCell>
                             <StyledTableCell align="right">{request.budget}</StyledTableCell>
                             <StyledTableCell align="right">{request.rdate}</StyledTableCell>
                             <StyledTableCell align="right">{request.category.category_name}</StyledTableCell>
-                            <StyledTableCell align="right"><Button id={request.rid} variant="outlined" onClick={handleSubmit}>Show Interest</Button></StyledTableCell>
+                            <StyledTableCell align="right"><Button   id={request.rid} variant="outlined" onClick={handleSubmit}>Apply</Button></StyledTableCell>
                         </StyledTableRow>
                     ))}
                 </TableBody>
             </Table>
         </TableContainer>
         <br/>
-        <Alert severity="success" style={{display: 'none'}} id="sucess">Requirment Posted</Alert>
         </div>
     )
 }

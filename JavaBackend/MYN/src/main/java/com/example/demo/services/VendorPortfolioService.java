@@ -21,4 +21,11 @@ public class VendorPortfolioService
 		{
 			return  repo.getById(vid);
 		}
+	   
+	   public VendorPortfolio getByVendor(int vid)
+		{
+			return  repo.getByVendor(vid);
+		}
+	   
+	   
 }
