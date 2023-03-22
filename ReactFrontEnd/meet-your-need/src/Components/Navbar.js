@@ -60,7 +60,7 @@ function Navigation() {
                     <Item>
                         <Nav.Link href="/contact">
                             <PhoneIcon /><br />
-                            Contact
+                            Contact Us
                         </Nav.Link></Item>
                     {isLoggedIn ?
                         <Item>

@@ -21,7 +21,8 @@ function Login() {
             fetch(link)
                 .then(response => response.json())
                 .then(data => {
-                    setUser(data)
+                    setUser(data);
+                    console.log(data);
                     var role = null;
                     if (data.role != null) {
                         role = data.role.roleId;

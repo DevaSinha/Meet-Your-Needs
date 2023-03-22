@@ -51,6 +51,14 @@ public class Response
 		this.vid = vid;
 		this.description = description;
 	}
+	
+	
+	
+	
+	public Response(int rid) {
+		super();
+		this.rid = rid;
+	}
 	public int getRid() {
 		return rid;
 	}

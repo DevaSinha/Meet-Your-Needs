@@ -15,4 +15,9 @@ public class ClientService {
 	{
 		return repo.getByUserID(id);
 	}
+	
+	public Client add(Client client)
+	{
+		return repo.save(client);
+	}
 }

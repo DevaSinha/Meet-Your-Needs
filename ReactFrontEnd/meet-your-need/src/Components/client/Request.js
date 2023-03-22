@@ -15,6 +15,8 @@ const RequestForm = () => {
     const [category, setCategory] = useState(0);
     const [budget, setBudget] = useState(0);
     const [description, setDescription] = useState('');
+    const [title, setTitle] = useState('');
+    const [deadline, setDeadline] = useState({});
     const [categories, setCategories] = useState([]);
     useEffect(() => {
         fetch("http://localhost:8080/allCategory")
@@ -35,6 +37,14 @@ const RequestForm = () => {
         setDescription(event.target.value);
     };
 
+    const handleDeadlineChange = (event) => {
+        setDeadline(event.target.value);
+    };
+
+    const handleTitleChange = (event) => {
+        setTitle(event.target.value);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(category);
@@ -42,7 +52,7 @@ const RequestForm = () => {
         const reqOption = {
             method: "post",
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ client: user.userId, category: category, rdate: new Date(), budget: budget, pid: description })
+            body: JSON.stringify({ client: user.userId, category: category, rdate: new Date(), budget: budget, pid: document.getElementById("description").value, title: title, deadline:deadline})
         }
         fetch("http://localhost:8080/addReq", reqOption)
             .then(resp => {
@@ -65,16 +75,18 @@ const RequestForm = () => {
                     <hr />
                     <label style={{ marginTop: '20px' }}>
                             <TextField
-                                id="description"
+                                id="title"
                                 label="Title"
                                 multiline
-                                onChange={handleDescriptionChange}
+                                onChange={handleTitleChange}
                             />
                         </label>
-                        <br />
-                        <br/>
+                    <br />
+                    <br />
                     <FormControl onSubmit={handleSubmit}>
+
                         
+
                         <InputLabel id="demo-simple-select-standard-label">Category</InputLabel>
                         <Select
                             labelId="demo-simple-select-standard-label"
@@ -108,13 +120,13 @@ const RequestForm = () => {
                                 inline
                             />
                         </label>
-                        
+
                         <br />
                         <br />
                         <br />
                         <br />
                         Deadline
-                        <input type={'date'} ></input>
+                        <input type={'date'} onChange={handleDeadlineChange}></input>
                         <label style={{ marginTop: '20px' }}>
                             <TextField
                                 id="description"
@@ -131,8 +143,8 @@ const RequestForm = () => {
                         </div>
                     </FormControl>
                 </CardContent>
-                <br/>
-                <Alert severity="success" style={{display: 'none'}} id="sucess">Requirment Posted</Alert>
+                <br />
+                <Alert severity="success" style={{ display: 'none' }} id="sucess">Requirment Posted</Alert>
             </Card>
         </div>
     );

@@ -30,6 +30,7 @@ public class RequestController {
 	@PostMapping("/addReq")
 	public Request addRequest(@RequestBody Request req)
 	{
+		System.out.println(req);
 		return service.addReq(req);
 	}
 	

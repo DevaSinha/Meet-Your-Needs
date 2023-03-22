@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Link, TextField } from "@mui/material";
 import { useReducer, useEffect } from "react";
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,7 @@ export default function FormWithValidation() {
 
     const [questions, setQuestions] = useState([])
     const navigate = useNavigate();
+    const [user, setUser] = useState({})
     const [statevalue, setStateValue] = useState(0);
     const handleStateIdChange = (event) => {
         setStateValue(event.target.value);
@@ -14,15 +15,15 @@ export default function FormWithValidation() {
     const [city, setCity] = useState([])
     const [states, setstate] = useState([])
     const getCities = (id) => {
-        fetch("http://localhost:8080/getcitybystate?state=" +id)
+        fetch("http://localhost:8080/getcitybystate?state=" + id)
             .then(response => response.json())
             .then(data => { setCity(data); })
 
-           
-    }
-    
 
-    
+    }
+
+
+
     useEffect(() => {
         fetch("http://localhost:8080/allState")
             .then(response => response.json())
@@ -30,8 +31,8 @@ export default function FormWithValidation() {
 
         fetch("http://localhost:8080/allQuestions")
             .then(response => response.json())
-            .then(data => { setQuestions(data); })     
-    },[]
+            .then(data => { setQuestions(data); })
+    }, []
     )
 
     const init = {
@@ -149,7 +150,7 @@ export default function FormWithValidation() {
                 {
                     if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/.test(value)) {
                         hasError = true;
-                        error = "Should Contain Characters And Numbers"
+                        error = "Should Start with Capital Alphabet, Contain Characters And Numbers"
                     }
                 }
                 break;
@@ -178,26 +179,40 @@ export default function FormWithValidation() {
         const reqOption = {
             method: "post",
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ firstName: state.fname.value, lastName: state.lname.value, email: state.email1.value,    stateId : document.getElementById("stat").value, birthdate: state.bday.value, password: state.password.value, phoneNo: state.phone.value, nationality: state.nationality.value, cityId: Number(document.getElementById("city").value), address: state.address.value, answer: document.getElementById("answer").value, questionId: Number(document.getElementById("que").value), role: 3 })
+            body: JSON.stringify({ firstName: state.fname.value, lastName: state.lname.value, email: state.email1.value, stateId: document.getElementById("stat").value, birthdate: state.bday.value, password: state.password.value, phoneNo: state.phone.value, nationality: state.nationality.value, cityId: Number(document.getElementById("city").value), address: state.address.value, answer: document.getElementById("answer").value, questionId: Number(document.getElementById("que").value), role: 3 })
         }
         fetch("http://localhost:8080/adduser", reqOption)
-            .then(resp => {
-                if (resp.ok){
-                    console.log("user added");
+            .then(response => response.json())
+            .then(data => { setUser(data) })
+
+
+        const clientOption = {
+            method: "post",
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ userId: user.userId })
+        }
+
+
+        /*fetch("http://localhost:8080/addClient?id="+Number(user.userId))
+            .then(response => {
+                if (response.ok) {
+                    console.log("requset sent");
                     navigate("/login");
                 }
                 else
                     throw new Error("server error");
             })
-            .catch((error) => { alert("server error,try after some time") });
+            */
 
     }
 
     const [state, dispatch] = useReducer(reducer, init);
 
     return (<div class="container">
-
-        <h2> RegistrationForm </h2>
+        <Link href="vendorregistration" underline="hover" sx={{alignItems:'end'}}>
+            Register As Vendor
+        </Link>
+        <h2> Client Registration </h2>
         <form className="form-control" >
 
             <br />
@@ -267,7 +282,7 @@ export default function FormWithValidation() {
             <div class="ms-5">
                 Enter Your State :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <label htmlFor="state">
-                    <select id="stat"  onChange={(e)=> {getCities(e.target.value); handleChange("stateid",e.target.value)}}>
+                    <select id="stat" onChange={(e) => { getCities(e.target.value); handleChange("stateid", e.target.value) }}>
                         {states.map((states) => (
 
                             <option key={states.stateId} value={states.stateId}>
@@ -281,7 +296,7 @@ export default function FormWithValidation() {
                 Enter Your City:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <label htmlFor="city">
                     <select name="city" value={state.city.value} id="city"
-                    onChange={(e) => { handleChange("city", e.target.value) }}>
+                        onChange={(e) => { handleChange("city", e.target.value) }}>
                         {city.map((city) => (
 
                             <option key={city.cityId} value={city.cityId}>
@@ -309,7 +324,7 @@ export default function FormWithValidation() {
                 Enter Your Security Question :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <label htmlFor="questions">
                     <select name="questions" id="que"
-                    onChange={(e) => { handleChange("questions", e.target.value) }}>
+                        onChange={(e) => { handleChange("questions", e.target.value) }}>
                         {questions.map((question) => (
                             <option key={question.qid} value={question.qid}>
                                 {question.questionText}

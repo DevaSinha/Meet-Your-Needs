@@ -86,6 +86,12 @@ public class User {
 		this.lastName = lastName;
 		this.status = status;
 	}
+	
+
+	public User(int userId) {
+		super();
+		this.userId = userId;
+	}
 
 	public int getUserId() {
 		return userId;

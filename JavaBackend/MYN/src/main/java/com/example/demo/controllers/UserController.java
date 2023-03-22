@@ -63,11 +63,13 @@ public class UserController {
 	public User checkValidate(@RequestParam("mail") String email,@RequestParam("password") String password)
 	{
 		User user = service.getByMail(email);
-		System.out.println(user);
+		//System.out.println(user);
+		System.out.println(password + " "+user.getPassword());
 		if(!user.getPassword().equals(password))
 		{
 			user = new User();
 		}
+		//System.out.println(user);
 		return user;
 	}
 	

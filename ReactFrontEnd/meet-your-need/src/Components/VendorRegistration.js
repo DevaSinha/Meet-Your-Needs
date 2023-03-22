@@ -9,6 +9,7 @@ export default function VendorRegistration() {
     const [answer, setAnswer] = useState('');
     const navigate = useNavigate();
     const [questions, setQuestions] = useState([])
+    const [user, setUser] = useState({})
 
     const [statevalue, setStateValue] = useState(0);
     const handleStateIdChange = (event) => {
@@ -133,7 +134,7 @@ export default function VendorRegistration() {
                 {
                     if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/.test(value)) {
                         hasError = true;
-                        error = "Should Contain Characters And Numbers"
+                         error = "Should Start with Capital Alphabet, Contain Characters And Numbers";
                     }
                 }
                 break;
@@ -161,21 +162,34 @@ export default function VendorRegistration() {
     const sendData = (e) => {
         console.log(document.getElementById('stat').value);
         e.preventDefault();
+        
         const reqOption = {
             method: "post",
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ firstName: state.fname.value, lastName: state.lname.value, email: state.email1.value, stateId: document.getElementById('stat').value, birthdate: state.bday.value, password: state.password.value, phoneNo: state.phone.value, nationality: state.nationality.value, cityId: Number(document.getElementById("city").value), address: state.address.value, answer: document.getElementById("answer").value, questionId: Number(document.getElementById("que").value), role:2 })
         }
         fetch("http://localhost:8080/adduser", reqOption)
-            .then(resp => {
-                if (resp.ok) {
-                    console.log("user added");
+            .then(response => response.json())
+            .then(data => { setUser(data); console.log(user.userId); })
+
+
+        const vendorOption = {
+            method: "post",
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ userid: Number(user.userId)})
+        }
+
+
+        fetch("http://localhost:8080/addVendor", vendorOption)
+            .then(response => {
+                if (response.ok) {
+                    console.log("requset sent");
+
                     navigate("/PortfolioForm");
                 }
                 else
                     throw new Error("server error");
             })
-            .catch((error) => { alert("server error,try after some time") });
 
     }
 
@@ -189,7 +203,7 @@ export default function VendorRegistration() {
     return (
         <div class="container-fluid">
 
-            <h2> RegistrationForm </h2>
+            <h2> Vendor Registration </h2>
             <form className="form-control" onSubmit={handleFormSubmit}>
 
                 <br />

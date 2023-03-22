@@ -47,6 +47,7 @@ public class UserService {
 		{
 			user = null;
 		}
+		//System.out.println(user);
 		return user;
 	}
 	

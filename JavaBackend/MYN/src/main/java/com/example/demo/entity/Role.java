@@ -44,4 +44,11 @@ public class Role {
     public void setRoleType(String roleType) {
         this.roleType = roleType;
     }
+
+	@Override
+	public String toString() {
+		return "Role [roleId=" + roleId + ", roleType=" + roleType + "]";
+	}
+    
+    
 }

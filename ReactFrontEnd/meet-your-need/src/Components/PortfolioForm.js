@@ -16,7 +16,7 @@ const PortfolioForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
       <label>
         Experience:
         <input type="text" value={experience} onChange={event => setExperience(event.target.value)} />
@@ -39,6 +39,7 @@ const PortfolioForm = () => {
       <br />
       <button type="submit">Submit</button>
     </form>
+
   );
 };
 

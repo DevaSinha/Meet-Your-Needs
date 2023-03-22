@@ -39,7 +39,7 @@ const PendingRequest = () => {
   useEffect(() => {
     fetch('http://localhost:8080/pendingUserRequest?id='+loggedInUser.clientId)
       .then(response => response.json())
-      .then(data => { setReq(data) })
+      .then(data => { setReq(data);console.log(data); })
   },[])
 
   const handleButtonClick = (event) => {

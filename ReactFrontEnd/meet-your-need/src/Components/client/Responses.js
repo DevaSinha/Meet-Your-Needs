@@ -43,23 +43,32 @@ function VendorResponse() {
     },
   }));
 
+  const handlevendor = (event) => {
+    // console.log()
+    localStorage.setItem('vendorport', event.target.id);
+    navigate('/port')
+  }
+
   const handleButtonClick = (event) => {
     event.preventDefault();
     const reqOption = {
       method: "post",
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ responseId: event.target.id, startTime: new Date() })
+      body: JSON.stringify({ responseId: Number(event.target.id), startTime: new Date() })
     }
     fetch("http://localhost:8080/addProject", reqOption)
       .then(resp => {
         if (resp.ok) {
-          console.log("requset sent");
-          document.getElementById("sucess").style.display = "block";
+          const proj = resp.json();
+          localStorage.setItem('projectid', Number(resp.projectId));
+          //console.log(Number(proj.responseId.reqid.budget));
+          //localStorage.setItem("cost", Number(proj.responseId.reqid.budget));
+          navigate("/payment");
         }
         else
           throw new Error("server error");
       })
-      .catch((error) => { alert("server error,try after some time") });
+      //.catch((error) => { alert("server error,try after some time") });
 
     fetch('http://localhost:8080/getByResponseid?id=' + event.target.id)
     .then(response => response.json())
@@ -92,9 +101,7 @@ function VendorResponse() {
             {resp.map((res) => (
               <StyledTableRow key={res.rid}>
                 <StyledTableCell component="th" scope="res">
-                  <Link href="#" underline="hover">
-                    {res.vid.userid.firstName}&nbsp;{res.vid.userid.lastName}
-                  </Link>
+                <Button variant="text" id={res.vid} onClick={handlevendor}>{res.vid.userid.firstName}&nbsp;{res.vid.userid.lastName}</Button>
                 </StyledTableCell>
                 <StyledTableCell align="right">{res.vid.port.category_id.category_name}</StyledTableCell>
                 <StyledTableCell align="right">{res.vid.port.price}</StyledTableCell>
